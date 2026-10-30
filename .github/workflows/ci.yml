@@ -1,0 +1,57 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  installed-package:
+    name: ${{ matrix.os }} / Python ${{ matrix.python }} / ${{ matrix.pylint }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {os: ubuntu-latest, python: "3.12", pylint: "pylint>=4,<5"}
+          - {os: ubuntu-latest, python: "3.13", pylint: "pylint>=4,<5"}
+          - {os: ubuntu-latest, python: "3.14", pylint: "pylint>=4,<5"}
+          - {os: ubuntu-latest, python: "3.12", pylint: "pylint==4.0.0"}
+          - {os: windows-latest, python: "3.12", pylint: "pylint>=4,<5"}
+          - {os: macos-latest, python: "3.14", pylint: "pylint>=4,<5"}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install validation tools and released fmdtools
+        run: python -m pip install build twine pytest ruff "fmdtools==2.5.7" "${{ matrix.pylint }}"
+      - name: Check code and build distributions
+        run: |
+          python -m ruff check src tests
+          python -m build
+          python -m twine check dist/*
+      - name: Install wheel without source paths
+        run: |
+          python -m pip install --no-deps dist/*.whl
+          python -c "import fmdtools_pylint; print(fmdtools_pylint.__file__)"
+      - name: Test from a neutral directory
+        run: |
+          cd "$RUNNER_TEMP"
+          python -m pytest "$GITHUB_WORKSPACE/tests" --rootdir="$RUNNER_TEMP" -o addopts= --import-mode=importlib -q
+      - name: Reinstall and test from the source archive
+        if: matrix.os == 'ubuntu-latest' && matrix.python == '3.13'
+        run: |
+          python -m pip install --no-deps --force-reinstall dist/*.tar.gz
+          cd "$RUNNER_TEMP"
+          python -m pytest "$GITHUB_WORKSPACE/tests" --rootdir="$RUNNER_TEMP" -o addopts= --import-mode=importlib -q

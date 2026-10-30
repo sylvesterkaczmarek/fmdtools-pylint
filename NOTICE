@@ -1,0 +1,23 @@
+fmdtools-pylint
+Standalone maintenance and adaptations Copyright (c) 2026 Sylvester Kaczmarek.
+
+This distribution contains material extracted from NASA's fmdtools repository:
+https://github.com/nasa/fmdtools
+Upstream snapshot: 6f19c23b8659c253decef2b2e85f3c373cddbbfd (lint branch).
+Original contribution: https://github.com/nasa/fmdtools/pull/79
+
+The original plugin implementation was contributed by Sylvester Kaczmarek.
+Daniel Hulse contributed usage-documentation revisions and review feedback.
+Original Apache-2.0 identifiers and applicable notices are retained.
+
+The original regression-test header includes:
+Copyright © 2024, United States Government, as represented by the Administrator
+of the National Aeronautics and Space Administration. All rights reserved.
+
+Original material is available under Apache License 2.0; see
+LICENSES/Apache-2.0.txt. Standalone adaptations are distributed under
+GPL-3.0-or-later; see LICENSE and docs/licensing.md.
+
+NASA, fmdtools, Pylint and Astroid names are used to identify compatibility and
+source provenance. This independently maintained project is not sponsored or
+endorsed by NASA. No NASA logo or insignia is used.

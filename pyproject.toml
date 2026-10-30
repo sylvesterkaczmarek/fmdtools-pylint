@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fmdtools-pylint"
+version = "0.1.0"
+description = "Static model-role and container-field checking for fmdtools with Pylint"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "GPL-3.0-or-later AND Apache-2.0"
+license-files = ["LICENSE", "LICENSES/Apache-2.0.txt", "NOTICE", "AUTHORS.md"]
+authors = [{name = "Sylvester Kaczmarek"}]
+maintainers = [{name = "Sylvester Kaczmarek"}]
+keywords = ["fmdtools", "pylint", "static-analysis", "model-checking", "reliability"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Framework :: Pylint",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Science/Research",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Operating System :: OS Independent",
+  "Topic :: Software Development :: Quality Assurance",
+]
+dependencies = ["pylint>=4,<5", "astroid>=4,<5"]
+
+[project.optional-dependencies]
+test = ["pytest>=8,<10", "fmdtools>=2.5.6,<3"]
+dev = ["fmdtools-pylint[test]", "build", "twine", "ruff"]
+
+[project.urls]
+Homepage = "https://github.com/sylvesterkaczmarek/fmdtools-pylint"
+Documentation = "https://github.com/sylvesterkaczmarek/fmdtools-pylint#readme"
+Issues = "https://github.com/sylvesterkaczmarek/fmdtools-pylint/issues"
+Changelog = "https://github.com/sylvesterkaczmarek/fmdtools-pylint/blob/main/CHANGELOG.md"
+"Upstream fmdtools" = "https://github.com/nasa/fmdtools"
+"Original contribution" = "https://github.com/nasa/fmdtools/pull/79"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["fmdtools_pylint*"]
+
+[tool.setuptools.package-data]
+fmdtools_pylint = ["*.rc"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --import-mode=importlib"
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]

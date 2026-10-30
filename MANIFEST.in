@@ -1,0 +1,7 @@
+include README.md CHANGELOG.md AUTHORS.md NOTICE PROVENANCE.md .pylintrc
+include LICENSE
+recursive-include LICENSES *.txt
+recursive-include docs *.md
+recursive-include tests *.py
+recursive-include examples *.py
+recursive-include src/fmdtools_pylint *.rc

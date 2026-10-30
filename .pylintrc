@@ -1,0 +1,4 @@
+# Optional project configuration. Installation alone does not enable the plugin.
+# Merge this setting with your own configuration; keep your other checks enabled.
+[MAIN]
+load-plugins=fmdtools_pylint
